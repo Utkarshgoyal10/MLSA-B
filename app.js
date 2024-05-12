@@ -18,7 +18,7 @@ app.use(cookieParser())
 import userRouter from './routes/user.routes.js'
 import eventRoute from './routes/event.routes.js'
 import registerEvent from './routes/eventRegister.routes.js'
-// import dashboardRouter from "./routes/dashboard.routes.js";
+import dashboardRouter from "./routes/dashboard.routes.js";
 
 
 //routes declaration
@@ -26,7 +26,7 @@ import registerEvent from './routes/eventRegister.routes.js'
 app.use('/api/user',userRouter);
 app.use('/api/event',eventRoute);
 app.use('/api/registerEvent',registerEvent);
-// app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/db", dashboardRouter);
 
 
 export { app }

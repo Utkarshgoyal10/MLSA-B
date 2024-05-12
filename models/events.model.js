@@ -6,10 +6,7 @@ const eventSchema = new mongoose.Schema({
     date:String,
     image:String,
     eventInfo:String,
-    // owner: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "User"
-    // }
+    images:[String]
 },
     {
         timestamps: true

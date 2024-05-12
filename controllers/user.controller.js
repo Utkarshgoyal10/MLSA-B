@@ -29,21 +29,16 @@ const registerUser = asyncHandler(async(req,res)=>{
     console.log(req )
     //check for images,check for profileImage
     const profileImageLocalpath = req.files?.profileImage?.[0].path;
-    if(!profileImageLocalpath)
-    {
-        throw  new ApiError(400,'profileImage file is required ')
-    }
+    
 
     //upload them on cloudinary
     const profileImage = await uploadOnCloudinary(profileImageLocalpath)
-    if(!profileImage){
-        throw  new ApiError(400,'profileImage file is required ')
-    }
+    
     //create user object 
 
     const user = await User.create({
         fullName,
-        profileImage: profileImage.url,
+        profileImage: "",
         email,
         password,
         username : username.toLowerCase(),
