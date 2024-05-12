@@ -3,7 +3,7 @@ import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const eventSchema = new mongoose.Schema({
     eventName:String,
-    date:String,
+    date:Date,
     image:String,
     eventInfo:String,
     images:[String]
