@@ -128,6 +128,58 @@ const allEventssignin = asyncHandler(async (req, res) => {
       throw new ApiError(400, "Unable to fetch events")
   }
 })
+const allEventssupcoming = asyncHandler(async (req, res) => {
+  try {
+    const currentDate = new Date();
+      const allEvent = await eventModel.aggregate([
+        {
+          $lookup: {
+            from:'eventregisters',
+            localField: '_id',
+            foreignField:'event',
+            as: 'registeredUser'
+          }
+        },
+        {
+          $addFields: {
+            registeredUserNo: {
+              $size: "$registeredUser"
+            },
+            isRegisteres: {
+                              $cond: {
+                                  if: {
+                                      $in: [
+                                        req.user?._id,
+                                          "$registeredUser.registerUser"
+                                      ]
+                                  },
+                                  then: true,
+                                  else: false
+                              }
+                          }
+
+          }
+        },
+        {
+          $match: {
+              date: { $gte: currentDate }
+          }
+      },
+        {
+          $sort: {
+              date: 1
+          }
+      }
+      ])
+      return res
+      .status(200)
+      .json(new ApiResponse(200, allEvent, "all events fetched successfully"));
+
+  } catch (error) {
+    console.log(error)
+      throw new ApiError(400, "Unable to fetch events")
+  }
+})
 
 const addEvent = asyncHandler(async (req, res) => {
     console.log(req.body)
@@ -208,5 +260,6 @@ export {
     allEventspast,
     addEvent,
     allEventssignin,
-    addImagesToEvent
+    addImagesToEvent,
+    allEventssupcoming
 }
