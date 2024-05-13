@@ -255,11 +255,48 @@ const addImagesToEvent = async (req, res) => {
   }
 };
 
+
+const event = asyncHandler(async (req, res) => {
+  try {
+    const {eventId} = req.params
+      const allEvent = await eventModel.aggregate([
+        {
+            $match:{
+              _id: new mongoose.Types.ObjectId(eventId)
+            }
+        },
+          {
+            $lookup: {
+              from:'eventregisters',
+              localField: '_id',
+              foreignField:'event',
+              as: 'registeredUser'
+            }
+          },
+          {
+            $addFields: {
+              registeredUser: {
+                $size: "$registeredUser"
+              }
+            }
+          },
+          
+        ])
+      return res
+      .status(200)
+      .json(new ApiResponse(200, allEvent, "event fetched successfully"));
+
+  } catch (error) {
+      throw new ApiError(400, "Unable to fetch events")
+  }
+})
+
 export {
     allEventsupcoming,
     allEventspast,
     addEvent,
     allEventssignin,
     addImagesToEvent,
-    allEventssupcoming
+    allEventssupcoming,
+    event
 }
