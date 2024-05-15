@@ -32,7 +32,7 @@ const allEventsupcoming = asyncHandler(async (req, res) => {
           },
             {
               $sort: {
-                  date: -1
+                  date: 1
               }
           }
           ])
@@ -183,9 +183,9 @@ const allEventssupcoming = asyncHandler(async (req, res) => {
 
 const addEvent = asyncHandler(async (req, res) => {
     console.log(req.body)
-    const { eventName, date, eventInfo} = req.body
+    const { eventName, date, eventInfo,registrationLink} = req.body
 
-    if(!(eventName && date && eventInfo))
+    if(!(eventName && date && eventInfo && registrationLink))
     {
         throw new ApiError(400,"Please  provide the required fields")
     }
@@ -204,7 +204,8 @@ const addEvent = asyncHandler(async (req, res) => {
             eventName, 
             date,
             image : imageFile.url,
-            eventInfo
+            eventInfo,
+            registrationLink
             })
     const eventUploaded = await eventModel.findById(event._id);
 

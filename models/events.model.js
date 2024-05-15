@@ -6,7 +6,8 @@ const eventSchema = new mongoose.Schema({
     date:Date,
     image:String,
     eventInfo:String,
-    images:[String]
+    images:[String],
+    registrationLink: String
 },
     {
         timestamps: true
