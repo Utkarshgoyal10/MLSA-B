@@ -1,7 +1,7 @@
 import {Router} from  'express';
 import {upload} from  "../middlewares/multer.middleware.js"
 import { verifyJWT } from '../middlewares/auth.middleware.js';
-import { addEvent, addImagesToEvent, allEventsupcoming,allEventspast, allEventssignin, allEventssupcoming, event } from '../controllers/events.controller.js';
+import { addEvent, addImagesToEvent, allEventsupcoming,allEventspast, allEventssignin, allEventssupcoming, event, events } from '../controllers/events.controller.js';
 const router = Router();
 
 router.route('/addEvent').post(verifyJWT,
@@ -13,7 +13,8 @@ router.route('/allEventsupcoming').get(allEventsupcoming)
 router.route('/allEventssupcoming').get(verifyJWT,allEventssupcoming)
 router.route('/allEventspast').get(allEventspast)
 router.route('/allEventss').get(verifyJWT,allEventssignin)
-router.route('/c/:eventId').get(verifyJWT,event)
+router.route('/cs/:eventId').get(verifyJWT,events)
+router.route('/c/:eventId').get(event)
 router.route('/addimage/c/:eventId').post(upload.array('image'),addImagesToEvent)
 
 export default router
