@@ -18,7 +18,7 @@ const memberSchema = new Schema (
             profileImage:{
                 type:String,
             },
-            linkedinId:{
+            linkedlnIdId:{
                 type: String,
                 required: true,
                 trim: true,
