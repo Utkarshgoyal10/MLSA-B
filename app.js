@@ -24,6 +24,7 @@ import userRouter from './routes/user.routes.js'
 import eventRoute from './routes/event.routes.js'
 import registerEvent from './routes/eventRegister.routes.js'
 import dashboardRouter from "./routes/dashboard.routes.js";
+import memberRouter from './routes/member.routes.js'
 
 
 //routes declaration
@@ -32,6 +33,7 @@ app.use('/api/user',userRouter);
 app.use('/api/event',eventRoute);
 app.use('/api/registerEvent',registerEvent);
 app.use("/api/db", dashboardRouter);
+app.use('/api/member',memberRouter);
 
 
 export { app }

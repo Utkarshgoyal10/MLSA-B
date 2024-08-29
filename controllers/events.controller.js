@@ -210,7 +210,7 @@ const addEvent = asyncHandler(async (req, res) => {
     const eventUploaded = await eventModel.findById(event._id);
 
     if (!eventUploaded) {
-        throw new ApiError(500, "videoUpload failed please try again !!!");
+        throw new ApiError(500, "event failed please try again !!!");
     }
 
     return res
