@@ -18,11 +18,12 @@ const memberSchema = new Schema (
             profileImage:{
                 type:String,
             },
-            githubId:{
+            linkedinId:{
                 type: String,
                 required: true,
                 trim: true,
-                index:true
+                index:true,
+                unique:true
             },
     },
     {

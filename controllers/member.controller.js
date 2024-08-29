@@ -6,7 +6,7 @@ import { Member } from "../models/member.model.js";
 // Add a new member
 const addMember = async (req, res) => {
 
-    const {name,domain,githubId} = req.body
+    const {name,domain,linkedinId} = req.body
 
 
 
@@ -30,7 +30,7 @@ const addMember = async (req, res) => {
         name,
         profileImage: profileImage.url,
         domain,
-        githubId,
+        linkedinId,
     })
 
     const memberUploaded = await Member.findById(member._id);
