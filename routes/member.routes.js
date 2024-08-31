@@ -1,11 +1,12 @@
 // routes/memberRoutes.js
 import {Router} from  'express';
 import {upload} from  "../middlewares/multer.middleware.js"
-import { getAllMembers, getMemberById, addMember } from "../controllers/member.controller.js";
+import { getAllMembers, getMemberById, addMember, getAllMemberss } from "../controllers/member.controller.js";
 // Route to get all members
 const router = Router();
 
-router.get('/Allmembers', getAllMembers);
+router.get('/Allmemberss', getAllMemberss);
+router.get('/Allmembers', getAllMemberss);
 
 // Route to get a specific member by ID
 router.get('/members/:id', getMemberById);

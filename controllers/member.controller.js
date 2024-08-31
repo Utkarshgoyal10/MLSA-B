@@ -66,7 +66,16 @@ const getMemberById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getAllMemberss = async (req, res) => {
+    try {
+      const members = await Member.find().sort({ p: -1 });
+      res.status(200).json(members);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 export {
 addMember,
-getAllMembers,getMemberById
+getAllMembers,getMemberById,getAllMemberss
 }
