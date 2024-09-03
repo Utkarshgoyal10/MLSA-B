@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async(req,res)=>{
         field?.trim() === "" 
     }))
     {
-        throw new  ApiError(400,"All field are required")
+        return res.status(201).json({ message: "All field are required"});
     }
     //check user already exist
 
@@ -24,7 +24,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     })
     if(existeduser)
     {
-        throw  new ApiError(409,"Email or  username already exists")
+        return res.status(201).json({ message: "Email or  username already exists"});
     }
     console.log(req )
     //check for images,check for profileImage
@@ -33,12 +33,16 @@ const registerUser = asyncHandler(async(req,res)=>{
 
     //upload them on cloudinary
     const profileImage = await uploadOnCloudinary(profileImageLocalpath)
+    if(!profileImage)
+    {
+        return res.status(201).json({ message: "Something went wrong while creating the account"});
+    }
     
     //create user object 
 
     const user = await User.create({
         fullName,
-        profileImage: "",
+        profileImage: profileImage.url,
         email,
         password,
         username : username.toLowerCase(),
@@ -51,9 +55,9 @@ const registerUser = asyncHandler(async(req,res)=>{
     )
 
     if(!createduser){
-        throw  new ApiError(500,"Something went wrong while creating the account ")
+        return res.status(201).json({ message: "Something went wrong while creating the account "});
     }
-    return  res.status(201).json(new ApiResponse(200,createduser,"user created successfully"))
+    return  res.status(200).json(new ApiResponse(200,createduser,"user created successfully"))
 })
 
 const generateAcessAndRefreshTokens =  async (userId)=>{
@@ -74,7 +78,12 @@ const loginUser = asyncHandler(async(req,res)=>{
     const {email,username,password}= req.body
 
     if(!username && !email){
-        throw  new ApiError(400,"Username or Email is required")
+        return res.status(201).json({ message: "Username or Email is required"});
+
+    }
+    if(!password){
+        return res.status(201).json({ message: "Password is required"});
+
     }
 
     const user = await User.findOne({
@@ -82,13 +91,13 @@ const loginUser = asyncHandler(async(req,res)=>{
     })
     // console.log(user._id)
     if(!user){
-        throw   new ApiError(404,"Invalid User")
+        return res.status(201).json({ message: "Invalid User"});
     }
     
     const isPasswordvalid=await user.isPasswordCorrect(password)
 
     if (!isPasswordvalid) {
-        throw new ApiError(401,'Incorrect Password')
+        return res.status(201).json({ message: 'Incorrect Password'});
     }
 
     const {accessToken,refreshToken}=  await generateAcessAndRefreshTokens(user._id)
@@ -337,63 +346,9 @@ const getUserProfile = asyncHandler(async (req,res)=> {
 
 
 
-const watchHistory = asyncHandler(async(req,res)=>{
-    console.log(req.user._id)
-    // console.log(mongoose.Types.ObjectId(req.user._id.toString()));
-    // const c=String(req.user._id)
-    // console.log
-
-    const user = await User.aggregate([
-        {
-            $match: {
-                // _id: new mongoose.Types.ObjectId(c), 
-                username : req.user.username
-            }
-        },
-        {
-            $lookup:{
-                from: 'videos',
-                localField:'watchHistory',
-                foreignField:'_id',
-                as:'watchHistory',
-                pipeline:[
-                    {
-                        $lookup:{
-                            from:'users',
-                            localField:'owner',
-                            foreignField:'_id',
-                            as: 'owner',
-                            pipeline:[
-                                {
-                                    $project:{
-                                        fullName:1,
-                                        username:1,
-                                        profileImage:1
-                                    }
-                                }
-                            ]
-                        },
-                    },
-                     {
-                         $addFields:{
-                             owner:{
-                                 $first:"$owner"
-                             }
-                         }
-                    }
-                ]
-                
-            }
-        }
-    ])
-
-    return res.status(200).json(new ApiResponse(200,user[0],"watchHistory"))
 
 
 
-})
 
-
-
-export {registerUser,loginUser,logoutUser,refreshAccessToken,changePassword,getCurrentUser,updateUserDetails,updateprofileImage,getUserProfile,watchHistory};
+export {registerUser,loginUser,logoutUser,refreshAccessToken,changePassword,getCurrentUser,updateUserDetails,updateprofileImage,getUserProfile};
 

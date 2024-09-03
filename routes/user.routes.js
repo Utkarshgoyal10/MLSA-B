@@ -1,5 +1,5 @@
 import {Router} from  'express';
-import {getUserProfile, loginUser, logoutUser, refreshAccessToken, registerUser, updateprofileImage, watchHistory} from  "../controllers/user.controller.js";
+import {getUserProfile, loginUser, logoutUser, refreshAccessToken, registerUser, updateprofileImage} from  "../controllers/user.controller.js";
 import {upload} from  "../middlewares/multer.middleware.js"
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 const router = Router();
@@ -19,7 +19,6 @@ router.route('/updateAvtar').patch(verifyJWT,
     updateprofileImage
 )
 router.route( '/userProfile/:username' ).get(verifyJWT,getUserProfile );
-router.route('/watch-History').get(verifyJWT, watchHistory);
 export default router
 
 

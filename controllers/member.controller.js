@@ -14,7 +14,7 @@ const addMember = async (req, res) => {
     
     if( !(profileImageLocalpath) )
         {
-            res.status(500).json({ message: error.message });
+          res.status(500).json({ message: error.message });
         }
 
     //upload them on cloudinary
@@ -50,7 +50,7 @@ const getAllMembers = async (req, res) => {
     const members = await Member.find();
     res.status(200).json(members);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(201).json({ message: "Server error occured" });
   }
 };
 
@@ -59,11 +59,11 @@ const getMemberById = async (req, res) => {
   try {
     const member = await Member.findById(req.params.id);
     if (!member) {
-      return res.status(404).json({ message: 'Member not found' });
+      return res.status(201).json({ message: 'Member not found' });
     }
     res.status(200).json(member);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(201).json({ message: error.message });
   }
 };
 
@@ -72,7 +72,7 @@ const getAllMemberss = async (req, res) => {
       const members = await Member.find().sort({ p: -1 });
       res.status(200).json(members);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(201).json({ message: error.message });
     }
   };
 export {
