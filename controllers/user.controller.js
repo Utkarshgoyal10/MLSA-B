@@ -276,7 +276,7 @@ const loginUser = asyncHandler(async(req,res)=>{
         // Resend verification email
         await sendVerificationEamil(email, otp);
 
-        return res.status(401).json({
+        return res.status(200).json({
             message: 'Email not verified. A new OTP has been sent to your email.',
         });
     }
@@ -333,12 +333,12 @@ const verifyAndResetPassword = async (req, res) => {
     // Check if the email exists
     const user = await User.findOne({ email });
     if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(200).json({ message: 'User not found' });
     }
 
     // Check if OTP matches and if it's expired
     if (user.verificationToken !== code) {
-        return res.status(400).json({ message: 'Invalid OTP' });
+        return res.status(200).json({ message: 'Invalid OTP' });
     }
     if(user.verificationTokenExpiresAt < Date.now())
     {
@@ -351,7 +351,7 @@ const verifyAndResetPassword = async (req, res) => {
         await user.save();
             await sendVerificationEamil(user.email, user.name, user.verificationToken);
 
-            return res.status(400).json({
+            return res.status(200).json({
                 success: false,
                 message: "Verification code has expired. A new verification email has been sent."
             });
