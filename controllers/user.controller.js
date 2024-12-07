@@ -156,7 +156,7 @@ const VerfiyEmail = async (req, res) => {
         user.verificationToken = verificationToken;
         user.verificationTokenExpiresAt = verificationTokenExpiresAt;
         await user.save();
-            await sendVerificationEamil(user.email, user.name, user.verificationToken);
+            await sendVerificationEamil(user.email, verificationToken);
 
             return res.status(400).json({
                 success: false,
